@@ -1,12 +1,14 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-#include <map>
 using namespace std;
 
 class Bank
 {
-    map<string, pair<string, double>> bank;
+    string ids[1000];
+    string passwords[1000];
+    double balances[1000];
+    int num_users = 0;
     string id;
     string password;
 
@@ -26,20 +28,14 @@ public:
                 login();
                 break;
             case 'c':
-            {
                 create_new_account();
                 break;
-            }
             case 'q':
-            {
                 cout << "Thanks using Indi ATM!\n";
                 break;
-            }
             default:
-            {
                 cout << "Invalid option. Please select some other valid option.\n";
                 break;
-            }
             }
         } while (option != 'q');
     }
@@ -62,7 +58,10 @@ public:
         cin >> id;
         cout << "Please enter your password: ";
         cin >> password;
-        bank[id] = make_pair(password, 0.0);
+        ids[num_users] = id;
+        passwords[num_users] = password;
+        balances[num_users] = 0.0;
+        num_users++;
         cout << "Thank You! Your account has been created!\n";
     }
 
@@ -72,7 +71,16 @@ public:
         cin >> id;
         cout << "Please enter your password: ";
         cin >> password;
-        if (bank.find(id) != bank.end() && bank[id].first == password)
+        int user_index = -1;
+        for (int i = 0; i < num_users; i++)
+        {
+            if (ids[i] == id && passwords[i] == password)
+            {
+                user_index = i;
+                break;
+            }
+        }
+        if (user_index != -1)
         {
             cout << "Access Granted!\n";
             char option;
@@ -87,7 +95,7 @@ public:
                     double amount;
                     cout << "Amount of deposit: $";
                     cin >> amount;
-                    bank[id].second += amount;
+                    balances[user_index] += amount;
                     break;
                 }
                 case 'w':
@@ -95,9 +103,9 @@ public:
                     double amount;
                     cout << "Amount of withdrawal: $";
                     cin >> amount;
-                    if (amount <= bank[id].second)
+                    if (amount <= balances[user_index])
                     {
-                        bank[id].second -= amount;
+                        balances[user_index] -= amount;
                     }
                     else
                     {
@@ -107,7 +115,7 @@ public:
                 }
                 case 'r':
                 {
-                    cout << "Your balance is $" << bank[id].second << ".\n";
+                    cout << "Your balance is $" << balances[user_index] << ".\n";
                     break;
                 }
                 case 'q':

@@ -3,9 +3,8 @@ using namespace std;
 
 class Sample {
 public:
-    typedef double (Sample::*MathFunction)(double);
 
-    double Compute(MathFunction func, double n) {
+    double Compute(double (Sample::*func)(double), double n) {
         return (this->*func)(n);
     }
 
@@ -34,7 +33,7 @@ void PrintMenu() {
     cout << "Enter your choice: ";
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     Sample obj;
     int choice;
     double n;
