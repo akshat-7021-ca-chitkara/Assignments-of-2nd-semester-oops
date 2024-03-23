@@ -7,7 +7,7 @@ public:
     // Method to perform calculation on two integer parameters
     int compute(int a, int b) {
         return a + b;
-    }
+    } 
 
     // Method to perform calculation on one integer and one float parameter
     float compute(int a, float b) {
